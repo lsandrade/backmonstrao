@@ -1,23 +1,40 @@
 package com.backmonstrao.controller;
 
 import com.backmonstrao.domain.Transacao;
+import com.backmonstrao.service.TransactionService;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.Mock;
+import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.mockito.ArgumentMatchers.eq;
+import static org.mockito.Mockito.when;
 
+@ExtendWith(MockitoExtension.class)
 class TransactionsControllerTest {
+
+    @Mock
+    TransactionService service;
 
     @Test
     void mustReturnTransactions() {
-        TransactionsController controller = new TransactionsController();
+        TransactionsController controller = new TransactionsController(service);
+        int id = 1000;
 
-        ResponseEntity<List<Transacao>> expected = ResponseEntity.ok(List.of(getTransacao()));
+        ResponseEntity<List<Transacao>> expected = new ResponseEntity<>(
+                List.of(getTransacao()),
+                HttpStatus.OK
+        );
 
-        ResponseEntity<List<Transacao>> transacoes = controller.getTransacoes();
+        when(service.getTransacoes(eq(id))).thenReturn(List.of(getTransacao()));
+
+        ResponseEntity<List<Transacao>> transacoes = controller.getTransacoes(id);
 
         assertNotNull(transacoes);
         assertEquals(expected, transacoes);

@@ -24,21 +24,17 @@ public class TransactionsControllerIntegrationTest {
     private TestRestTemplate restTemplate = new TestRestTemplate();
 
     @Test
-    void la() {
-        assertTrue(true);
-    }
-
-    @Test
     public void contextLoads() throws Exception {
         assertThat(controller).isNotNull();
     }
 
     @Test
-    public void greetingShouldReturnDefaultMessage() throws Exception {
+    public void mustReturnTransaction() throws Exception {
 
         ObjectMapper mapper = new ObjectMapper();
+        int id = 1000;
 
-        assertThat(this.restTemplate.getForObject("http://localhost:" + port + "/",
+        assertThat(this.restTemplate.getForObject("http://localhost:" + port + "/" + id + "/transacoes/",
                 String.class)).contains(mapper.writeValueAsString(getTransacao()));
     }
 

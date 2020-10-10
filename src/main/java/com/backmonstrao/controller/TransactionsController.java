@@ -1,28 +1,30 @@
 package com.backmonstrao.controller;
 
 import com.backmonstrao.domain.Transacao;
+import com.backmonstrao.service.TransactionService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
 
 @RestController
+@RequestMapping("/")
 public class TransactionsController {
 
-    @GetMapping
-    public ResponseEntity<List<Transacao>> getTransacoes() {
-        Transacao transacao = getTransacao();
+    private TransactionService service;
 
-        return ResponseEntity.ok(List.of(transacao));
+    @Autowired
+    public TransactionsController(TransactionService service) {
+        this.service = service;
     }
 
-    private Transacao getTransacao() {
-        Transacao transacao = new Transacao();
-        transacao.setDescricao("descricao");
-        transacao.setData(999L);
-        transacao.setValor(9999);
-        transacao.setDuplicated(false);
-        return transacao;
+    @GetMapping("/{id}/transacoes")
+    public ResponseEntity<List<Transacao>> getTransacoes(@PathVariable int id) {
+        return ResponseEntity.ok(service.getTransacoes(id));
     }
+
 }
