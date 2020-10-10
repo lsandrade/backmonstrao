@@ -1,15 +1,13 @@
 package com.backmonstrao.controller;
 
 
-import com.backmonstrao.domain.Transcao;
+import com.backmonstrao.domain.Transacao;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.web.client.TestRestTemplate;
 import org.springframework.boot.web.server.LocalServerPort;
-import org.springframework.context.annotation.Bean;
-import org.springframework.web.client.RestTemplate;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertTrue;
@@ -41,11 +39,11 @@ public class TransactionsControllerIntegrationTest {
         ObjectMapper mapper = new ObjectMapper();
 
         assertThat(this.restTemplate.getForObject("http://localhost:" + port + "/",
-                String.class)).contains(mapper.writeValueAsString(getTranscao()));
+                String.class)).contains(mapper.writeValueAsString(getTransacao()));
     }
 
-    private Transcao getTranscao() {
-        Transcao transacao = new Transcao();
+    private Transacao getTransacao() {
+        Transacao transacao = new Transacao();
         transacao.setDescricao("descricao");
         transacao.setData(999L);
         transacao.setValor(9999);

@@ -1,6 +1,6 @@
 package com.backmonstrao.controller;
 
-import com.backmonstrao.domain.Transcao;
+import com.backmonstrao.domain.Transacao;
 import org.junit.jupiter.api.Test;
 import org.springframework.http.ResponseEntity;
 
@@ -15,16 +15,16 @@ class TransactionsControllerTest {
     void mustReturnTransactions() {
         TransactionsController controller = new TransactionsController();
 
-        ResponseEntity<List<Transcao>> expected = ResponseEntity.ok(List.of(getTranscao()));
+        ResponseEntity<List<Transacao>> expected = ResponseEntity.ok(List.of(getTransacao()));
 
-        ResponseEntity<List<Transcao>> transacoes = controller.getTransacoes();
+        ResponseEntity<List<Transacao>> transacoes = controller.getTransacoes();
 
         assertNotNull(transacoes);
         assertEquals(expected, transacoes);
     }
 
-    private Transcao getTranscao() {
-        Transcao transacao = new Transcao();
+    private Transacao getTransacao() {
+        Transacao transacao = new Transacao();
         transacao.setDescricao("descricao");
         transacao.setData(999L);
         transacao.setValor(9999);
