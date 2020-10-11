@@ -3,13 +3,20 @@ package com.backmonstrao.service;
 import com.backmonstrao.domain.Transacao;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.ValueSource;
+import org.mockito.Mock;
+import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.util.List;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.mockito.ArgumentMatchers.eq;
+import static org.mockito.Mockito.when;
 
+@ExtendWith(MockitoExtension.class)
 public class TransactionServiceTest {
 
     public static final int VALID_ID = 1000;
@@ -18,14 +25,19 @@ public class TransactionServiceTest {
 
     private TransactionService service;
 
+    @Mock
+    GeneratorService generator;
+
     @BeforeEach
     void setUp() {
-        service = new TransactionService();
+        service = new TransactionService(generator);
     }
 
     @Test
     void mustReturnTransactionsWhenValidIdDataIsPassed() {
         List<Transacao> expected = List.of(getTransacao());
+
+        when(generator.generateData(eq(VALID_YEAR), eq(VALID_MONTH))).thenReturn(999L);
 
         List<Transacao> transacoes = service.getTransacoes(VALID_ID, VALID_YEAR, VALID_MONTH);
 

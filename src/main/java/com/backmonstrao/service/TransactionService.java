@@ -1,6 +1,7 @@
 package com.backmonstrao.service;
 
 import com.backmonstrao.domain.Transacao;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.Calendar;
@@ -18,10 +19,17 @@ public class TransactionService {
     public static final int MIN_YEAR = 1970;
     public static final int[] VALID_MONTHS = {1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12};
 
+    private GeneratorService generator;
+
+    @Autowired
+    public TransactionService(GeneratorService generator) {
+        this.generator = generator;
+    }
+
     public List<Transacao> getTransacoes(int id, int year, int month) {
 
         if (isIdValid(id) && isYearValid(year) && isMonthValid(month)) {
-            return List.of(getTransacao());
+            return List.of(getTransacao(year, month));
         }
 
         return Collections.emptyList();
@@ -39,10 +47,10 @@ public class TransactionService {
         return id >= MIN_VALUE_ID && id <= MAX_VALUE_ID;
     }
 
-    private Transacao getTransacao() {
+    private Transacao getTransacao(int year, int month) {
         Transacao transacao = new Transacao();
         transacao.setDescricao("descricao");
-        transacao.setData(999L);
+        transacao.setData(generator.generateData(year, month));
         transacao.setValor(9999);
         transacao.setDuplicated(false);
         return transacao;
