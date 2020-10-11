@@ -51,7 +51,7 @@ public class TransactionService {
         Transacao transacao = new Transacao();
         transacao.setDescricao("descricao");
         transacao.setData(generator.generateData(year, month));
-        transacao.setValor(9999);
+        transacao.setValor(generator.generateValue(year + month));
         transacao.setDuplicated(false);
         return transacao;
     }

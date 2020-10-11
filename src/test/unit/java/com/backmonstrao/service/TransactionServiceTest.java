@@ -38,6 +38,7 @@ public class TransactionServiceTest {
         List<Transacao> expected = List.of(getTransacao());
 
         when(generator.generateData(eq(VALID_YEAR), eq(VALID_MONTH))).thenReturn(999L);
+        when(generator.generateValue(eq(VALID_YEAR + VALID_MONTH))).thenReturn(9999);
 
         List<Transacao> transacoes = service.getTransacoes(VALID_ID, VALID_YEAR, VALID_MONTH);
 

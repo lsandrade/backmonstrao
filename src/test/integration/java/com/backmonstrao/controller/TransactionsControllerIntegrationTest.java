@@ -47,7 +47,7 @@ public class TransactionsControllerIntegrationTest {
         Transacao transacao = new Transacao();
         transacao.setDescricao("descricao");
         transacao.setData(1601868262117L);
-        transacao.setValor(9999);
+        transacao.setValor(8243542);
         transacao.setDuplicated(false);
         return transacao;
     }

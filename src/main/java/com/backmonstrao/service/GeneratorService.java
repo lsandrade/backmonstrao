@@ -8,11 +8,18 @@ import java.util.Random;
 @Service
 public class GeneratorService {
 
+    public static final int MIN_VALUE = -9999999;
+    public static final int MAX_VALUE = 9999999;
+
     public long generateData(int year, int month) {
-        Random random = new Random(year + month);
         long start = getDateInMiliseconds(year, month, 1, 0, 0, 0, 0);
         long end = getDateInMiliseconds(year, month, 28, 23, 59, 59, 999);
 
+        return getRandomLong(year + month, start, end);
+    }
+
+    private long getRandomLong(int seed, long start, long end) {
+        Random random = new Random(seed);
         return start + Math.abs(random.nextLong()) % (end - start);
     }
 
@@ -27,5 +34,9 @@ public class GeneratorService {
         calendar.set(Calendar.MILLISECOND, mili);
 
         return calendar.getTimeInMillis();
+    }
+
+    public Integer generateValue(int seed) {
+        return Math.toIntExact(getRandomLong(seed, MIN_VALUE, MAX_VALUE));
     }
 }
