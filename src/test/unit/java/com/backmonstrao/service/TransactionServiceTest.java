@@ -13,6 +13,7 @@ import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.mockito.ArgumentMatchers.anyInt;
 import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.when;
 
@@ -37,8 +38,8 @@ public class TransactionServiceTest {
     void mustReturnTransactionsWhenValidIdDataIsPassed() {
         List<Transacao> expected = List.of(getTransacao());
 
-        when(generator.generateData(eq(VALID_YEAR), eq(VALID_MONTH))).thenReturn(999L);
-        when(generator.generateValue(eq(VALID_YEAR + VALID_MONTH))).thenReturn(9999);
+        when(generator.generateData(anyInt(), anyInt(), anyInt())).thenReturn(999L);
+        when(generator.generateValue(anyInt())).thenReturn(9999);
 
         List<Transacao> transacoes = service.getTransacoes(VALID_ID, VALID_YEAR, VALID_MONTH);
 

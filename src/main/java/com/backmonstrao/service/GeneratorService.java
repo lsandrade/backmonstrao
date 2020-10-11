@@ -11,11 +11,11 @@ public class GeneratorService {
     public static final int MIN_VALUE = -9999999;
     public static final int MAX_VALUE = 9999999;
 
-    public long generateData(int year, int month) {
+    public long generateData(int year, int month, int seed) {
         long start = getDateInMiliseconds(year, month, 1, 0, 0, 0, 0);
         long end = getDateInMiliseconds(year, month, 28, 23, 59, 59, 999);
 
-        return getRandomLong(year + month, start, end);
+        return getRandomLong(seed, start, end);
     }
 
     private long getRandomLong(int seed, long start, long end) {

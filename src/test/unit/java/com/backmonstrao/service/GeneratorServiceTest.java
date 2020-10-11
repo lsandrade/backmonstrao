@@ -30,7 +30,7 @@ class GeneratorServiceTest {
         long start = getDateInMiliseconds(VALID_YEAR, month, 1, 0, 0, 0, 0);
         long end = getDateInMiliseconds(VALID_YEAR, month, 28, 23, 59, 59, 999);
 
-        long dateGenerated = generatorService.generateData(VALID_YEAR, month);
+        long dateGenerated = generatorService.generateData(VALID_YEAR, month, 1);
 
         assertTrue(dateGenerated >= start);
         assertTrue(dateGenerated <= end);
