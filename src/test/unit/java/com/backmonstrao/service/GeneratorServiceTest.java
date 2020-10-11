@@ -14,6 +14,8 @@ class GeneratorServiceTest {
     public static final int VALID_YEAR = 2020;
     public static final int MIN_VALUE = -9999999;
     public static final int MAX_VALUE = 9999999;
+    public static final int MIN_SIZE_DESC = 10;
+    public static final int MAX_SIZE_DESC = 120;
 
     GeneratorService generatorService;
 
@@ -38,16 +40,30 @@ class GeneratorServiceTest {
 
     @Test
     void mustGenerateValueBetweenRange() {
-        Integer value1 = generatorService.generateValue( VALID_YEAR + 1);
-        Integer value2 = generatorService.generateValue( MAX_VALUE);
+        Integer value1 = generatorService.generateValor( VALID_YEAR + 1);
+        Integer value2 = generatorService.generateValor( MAX_VALUE);
 
         assertTrue(value1 >= MIN_VALUE);
         assertTrue(value1 <= MAX_VALUE);
 
-        assertNotEquals(value1, value2);
-
         assertTrue(value2 >= MIN_VALUE);
         assertTrue(value2 <= MAX_VALUE);
+
+        assertNotEquals(value1, value2);
+    }
+
+    @Test
+    void mustGenerateDescricao() {
+        String descricao1 = generatorService.generateDescricao(1);
+        String descricao2 = generatorService.generateDescricao(2000);
+
+        assertTrue(descricao1.length() >= MIN_SIZE_DESC);
+        assertTrue(descricao1.length() <= MAX_SIZE_DESC);
+
+        assertTrue(descricao2.length() >= MIN_SIZE_DESC);
+        assertTrue(descricao2.length() <= MAX_SIZE_DESC);
+
+        assertNotEquals(descricao1, descricao2);
     }
 
     private long getDateInMiliseconds(int year, int month, int day, int hour, int minute, int second, int mili) {

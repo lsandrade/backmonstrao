@@ -14,7 +14,6 @@ import java.util.List;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.mockito.ArgumentMatchers.anyInt;
-import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
@@ -39,7 +38,9 @@ public class TransactionServiceTest {
         List<Transacao> expected = List.of(getTransacao());
 
         when(generator.generateData(anyInt(), anyInt(), anyInt())).thenReturn(999L);
-        when(generator.generateValue(anyInt())).thenReturn(9999);
+        when(generator.generateValor(anyInt())).thenReturn(9999);
+        when(generator.generateDescricao(anyInt())).thenReturn("paçoquita");
+
 
         List<Transacao> transacoes = service.getTransacoes(VALID_ID, VALID_YEAR, VALID_MONTH);
 
@@ -74,7 +75,7 @@ public class TransactionServiceTest {
 
     private Transacao getTransacao() {
         Transacao transacao = new Transacao();
-        transacao.setDescricao("descricao");
+        transacao.setDescricao("paçoquita");
         transacao.setData(999L);
         transacao.setValor(9999);
         transacao.setDuplicated(false);

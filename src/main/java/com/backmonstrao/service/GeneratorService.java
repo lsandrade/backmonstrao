@@ -11,6 +11,10 @@ public class GeneratorService {
     public static final int MIN_VALUE = -9999999;
     public static final int MAX_VALUE = 9999999;
 
+    public static final String[] SUJEITOS = {"dinheiro", "camisa", "bermuda", "sunga", "televisao", "colchao", "comida"};
+    public static final String[] VERBOS = {"sumiu", "pegou fogo", "me ameaçou", "ganhou", "correu", "desenvolveu", "comprou"};
+    public static final String[] PREDICADOS = {"ontem", "com fome", "terça feira", "depois de amanhã", "na minha mochila", "pra praia"};
+
     public long generateData(int year, int month, int seed) {
         long start = getDateInMiliseconds(year, month, 1, 0, 0, 0, 0);
         long end = getDateInMiliseconds(year, month, 28, 23, 59, 59, 999);
@@ -36,7 +40,14 @@ public class GeneratorService {
         return calendar.getTimeInMillis();
     }
 
-    public Integer generateValue(int seed) {
+    public Integer generateValor(int seed) {
         return Math.toIntExact(getRandomLong(seed, MIN_VALUE, MAX_VALUE));
+    }
+
+    public String generateDescricao(int seed) {
+        String sujeito = SUJEITOS[seed % SUJEITOS.length];
+        String verbo = VERBOS[seed % VERBOS.length];
+        String predicado = PREDICADOS[seed % VERBOS.length];
+        return String.format("%s %s %s", sujeito, verbo, predicado);
     }
 }

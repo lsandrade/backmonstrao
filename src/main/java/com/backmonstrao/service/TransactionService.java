@@ -51,9 +51,9 @@ public class TransactionService {
         int seed = id + year + month;
 
         Transacao transacao = new Transacao();
-        transacao.setDescricao("descricao");
+        transacao.setDescricao(generator.generateDescricao(seed));
         transacao.setData(generator.generateData(year, month, seed));
-        transacao.setValor(generator.generateValue(seed));
+        transacao.setValor(generator.generateValor(seed));
         transacao.setDuplicated(false);
         return transacao;
     }
