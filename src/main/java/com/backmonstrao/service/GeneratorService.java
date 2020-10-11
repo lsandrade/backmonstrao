@@ -3,13 +3,11 @@ package com.backmonstrao.service;
 import com.backmonstrao.domain.Transacao;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
 import java.util.Random;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
-import java.util.stream.Stream;
 
 @Service
 public class GeneratorService {
