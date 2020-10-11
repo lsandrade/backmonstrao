@@ -25,6 +25,36 @@ public class GeneratorService {
         return getRandomLong(seed, start, end);
     }
 
+    public Integer generateValor(int seed) {
+        return Math.toIntExact(getRandomLong(seed, MIN_VALUE, MAX_VALUE));
+    }
+
+    public String generateDescricao(int seed) {
+        String sujeito = SUJEITOS[seed % SUJEITOS.length];
+        String verbo = VERBOS[seed % VERBOS.length];
+        String predicado = PREDICADOS[seed % PREDICADOS.length];
+        return String.format("%s %s %s", sujeito, verbo, predicado);
+    }
+
+    public List<Transacao> getTransacoes(int id, int year, int month, int quant, boolean duplicated) {
+        List<Transacao> transacaos = new ArrayList<>();
+
+        for (var i = 0; i < quant; i++) {
+            int seed = i + id + year + month;
+            transacaos.add(getTransacao(id, year, month, seed));
+
+            if (quant > 1 && duplicated) {
+                Transacao transacao = getTransacao(id, year, month, seed);
+                transacao.setDuplicated(true);
+                transacaos.add(transacao);
+                i+=1;
+            }
+
+        }
+
+        return transacaos;
+    }
+
     private long getRandomLong(int seed, long start, long end) {
         Random random = new Random(seed);
         return start + Math.abs(random.nextLong()) % (end - start);
@@ -41,28 +71,6 @@ public class GeneratorService {
         calendar.set(Calendar.MILLISECOND, mili);
 
         return calendar.getTimeInMillis();
-    }
-
-    public Integer generateValor(int seed) {
-        return Math.toIntExact(getRandomLong(seed, MIN_VALUE, MAX_VALUE));
-    }
-
-    public String generateDescricao(int seed) {
-        String sujeito = SUJEITOS[seed % SUJEITOS.length];
-        String verbo = VERBOS[seed % VERBOS.length];
-        String predicado = PREDICADOS[seed % PREDICADOS.length];
-        return String.format("%s %s %s", sujeito, verbo, predicado);
-    }
-
-    public List<Transacao> getTransacoes(int id, int year, int month, int quant) {
-        List<Transacao> transacaos = new ArrayList<>();
-
-        for (var i = 0; i < quant; i++) {
-            int seed = i + id + year + month;
-            transacaos.add(getTransacao(id, year, month, seed));
-        }
-
-        return transacaos;
     }
 
     private Transacao getTransacao(int id, int year, int month, int seed) {

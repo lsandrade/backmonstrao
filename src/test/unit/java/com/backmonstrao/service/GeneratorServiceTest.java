@@ -9,6 +9,7 @@ import org.junit.jupiter.params.provider.ValueSource;
 import java.util.Calendar;
 import java.util.List;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.*;
 
 class GeneratorServiceTest {
@@ -74,12 +75,31 @@ class GeneratorServiceTest {
         int id = 1000;
         int quant = 2;
 
-        List<Transacao> transacoes = generatorService.getTransacoes(id, VALID_YEAR, month, quant);
+        List<Transacao> transacoes = generatorService.getTransacoes(id, VALID_YEAR, month, quant, false);
 
         assertEquals(quant, transacoes.size());
         assertFalse(transacoes.get(0).isDuplicated());
         assertNotEquals(transacoes.get(0), transacoes.get(1));
+    }
 
+    @Test
+    void mustGenerateDuplicatedTransactions() {
+        int month = 10;
+        int id = 1000;
+        int quant = 2;
+
+        List<Transacao> transacoes = generatorService.getTransacoes(id, VALID_YEAR, month, quant, true);
+
+        assertEquals(quant, transacoes.size());
+
+        assertFalse(transacoes.get(0).isDuplicated());
+        assertTrue(transacoes.get(1).isDuplicated());
+
+        assertThat(transacoes.get(0))
+                .isEqualToIgnoringGivenFields(transacoes.get(1),
+                        "duplicated");
+
+        assertNotEquals(transacoes.get(0), transacoes.get(1));
     }
 
     private long getDateInMiliseconds(int year, int month, int day, int hour, int minute, int second, int mili) {
