@@ -28,10 +28,10 @@ public class TransactionService {
 
     public List<Transacao> getTransacoes(int id, int year, int month) {
 
-        int quant = (id + month) % 10 + 1;
-
         if (isIdValid(id) && isYearValid(year) && isMonthValid(month)) {
-            return generator.getTransacoes(id, year, month, quant, false);
+            int quant = (id + month) % 10 + 1;
+            boolean duplicated = month % 4 == 0;
+            return generator.getTransacoes(id, year, month, quant, duplicated);
         }
 
         return Collections.emptyList();

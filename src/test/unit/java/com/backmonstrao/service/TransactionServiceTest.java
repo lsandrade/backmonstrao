@@ -83,6 +83,15 @@ public class TransactionServiceTest {
                 .getTransacoes(eq(VALID_ID), eq(VALID_YEAR), eq(month), eq(quant), anyBoolean());
     }
 
+    @ParameterizedTest
+    @MethodSource("provideMonthAndDuplicated")
+    void mustReturnAtLeastThreeMonthsWithDuplicatedTransactionsInTwelveMonths(int month, boolean duplicated) {
+        List<Transacao> transacoes = service.getTransacoes(VALID_ID, VALID_YEAR, month);
+
+        verify(generator, times(1))
+                .getTransacoes(eq(VALID_ID), eq(VALID_YEAR), eq(month), anyInt(), eq(duplicated));
+    }
+
     private static Stream<Arguments> provideMonthAndQuant() {
         return Stream.of(
                 Arguments.of(1, 2),
@@ -91,6 +100,23 @@ public class TransactionServiceTest {
                 Arguments.of(10, 1),
                 Arguments.of(11, 2),
                 Arguments.of(12, 3)
+        );
+    }
+
+    private static Stream<Arguments> provideMonthAndDuplicated() {
+        return Stream.of(
+                Arguments.of(1, false),
+                Arguments.of(2, false),
+                Arguments.of(3, false),
+                Arguments.of(4, true),
+                Arguments.of(5, false),
+                Arguments.of(6, false),
+                Arguments.of(7, false),
+                Arguments.of(8, true),
+                Arguments.of(9, false),
+                Arguments.of(10, false),
+                Arguments.of(11, false),
+                Arguments.of(12, true)
         );
     }
 
