@@ -1,5 +1,6 @@
 package com.backmonstrao.service;
 
+import com.backmonstrao.domain.Transacao;
 import org.springframework.stereotype.Service;
 
 import java.util.Calendar;
@@ -49,5 +50,16 @@ public class GeneratorService {
         String verbo = VERBOS[seed % VERBOS.length];
         String predicado = PREDICADOS[seed % VERBOS.length];
         return String.format("%s %s %s", sujeito, verbo, predicado);
+    }
+
+    Transacao getTransacao(int id, int year, int month) {
+        int seed = id + year + month;
+
+        Transacao transacao = new Transacao();
+        transacao.setDescricao(generateDescricao(seed));
+        transacao.setData(generateData(year, month, seed));
+        transacao.setValor(generateValor(seed));
+        transacao.setDuplicated(false);
+        return transacao;
     }
 }

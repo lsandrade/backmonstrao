@@ -29,7 +29,7 @@ public class TransactionService {
     public List<Transacao> getTransacoes(int id, int year, int month) {
 
         if (isIdValid(id) && isYearValid(year) && isMonthValid(month)) {
-            return List.of(getTransacao(id, year, month));
+            return List.of(generator.getTransacao(id, year, month));
         }
 
         return Collections.emptyList();
@@ -47,14 +47,4 @@ public class TransactionService {
         return id >= MIN_VALUE_ID && id <= MAX_VALUE_ID;
     }
 
-    private Transacao getTransacao(int id, int year, int month) {
-        int seed = id + year + month;
-
-        Transacao transacao = new Transacao();
-        transacao.setDescricao(generator.generateDescricao(seed));
-        transacao.setData(generator.generateData(year, month, seed));
-        transacao.setValor(generator.generateValor(seed));
-        transacao.setDuplicated(false);
-        return transacao;
-    }
 }
