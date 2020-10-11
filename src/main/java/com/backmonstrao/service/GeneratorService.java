@@ -7,6 +7,9 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
 import java.util.Random;
+import java.util.stream.Collectors;
+import java.util.stream.IntStream;
+import java.util.stream.Stream;
 
 @Service
 public class GeneratorService {
@@ -37,22 +40,22 @@ public class GeneratorService {
     }
 
     public List<Transacao> getTransacoes(int id, int year, int month, int quant, boolean duplicated) {
-        List<Transacao> transacaos = new ArrayList<>();
 
-        for (var i = 0; i < quant; i++) {
-            int seed = i + id + year + month;
-            transacaos.add(getTransacao(id, year, month, seed));
+        List<Transacao> transacaos = IntStream.range(0, quant)
+                .mapToObj(i -> getTransacao(id, year, month, i + id + year + month))
+                .collect(Collectors.toList());
 
-            if (quant > 1 && duplicated) {
-                Transacao transacao = getTransacao(id, year, month, seed);
-                transacao.setDuplicated(true);
-                transacaos.add(transacao);
-                i+=1;
-            }
-
+        if (quant > 1 && duplicated) {
+            transacaos.set(transacaos.size() - 1,
+                    getDuplicatedTransacao(getTransacao(id, year, month, id + year + month)));
         }
 
         return transacaos;
+    }
+
+    private Transacao getDuplicatedTransacao(Transacao transacao) {
+        transacao.setDuplicated(true);
+        return transacao;
     }
 
     private long getRandomLong(int seed, long start, long end) {
