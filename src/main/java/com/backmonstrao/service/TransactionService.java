@@ -29,7 +29,7 @@ public class TransactionService {
     public List<Transacao> getTransacoes(int id, int year, int month) {
 
         if (isIdValid(id) && isYearValid(year) && isMonthValid(month)) {
-            return List.of(generator.getTransacao(id, year, month));
+            return generator.getTransacoes(id, year, month, 1);
         }
 
         return Collections.emptyList();

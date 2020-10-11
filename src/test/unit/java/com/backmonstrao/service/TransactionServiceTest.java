@@ -36,8 +36,8 @@ public class TransactionServiceTest {
     @Test
     void mustReturnTransactionsWhenValidIdDataIsPassed() {
         List<Transacao> expected = List.of(getTransacao());
-        
-        when(generator.getTransacao(anyInt(), anyInt(), anyInt())).thenReturn(getTransacao());
+
+        when(generator.getTransacoes(anyInt(), anyInt(), anyInt(), anyInt())).thenReturn(List.of(getTransacao()));
 
         List<Transacao> transacoes = service.getTransacoes(VALID_ID, VALID_YEAR, VALID_MONTH);
 

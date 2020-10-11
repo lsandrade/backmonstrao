@@ -1,11 +1,13 @@
 package com.backmonstrao.service;
 
+import com.backmonstrao.domain.Transacao;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.ValueSource;
 
 import java.util.Calendar;
+import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -64,6 +66,20 @@ class GeneratorServiceTest {
         assertTrue(descricao2.length() <= MAX_SIZE_DESC);
 
         assertNotEquals(descricao1, descricao2);
+    }
+
+    @Test
+    void mustGenerateNonDuplicatedTransactions() {
+        int month = 10;
+        int id = 1000;
+        int quant = 2;
+
+        List<Transacao> transacoes = generatorService.getTransacoes(id, VALID_YEAR, month, quant);
+
+        assertEquals(quant, transacoes.size());
+        assertFalse(transacoes.get(0).isDuplicated());
+        assertNotEquals(transacoes.get(0), transacoes.get(1));
+
     }
 
     private long getDateInMiliseconds(int year, int month, int day, int hour, int minute, int second, int mili) {

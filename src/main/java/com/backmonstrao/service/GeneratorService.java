@@ -3,7 +3,9 @@ package com.backmonstrao.service;
 import com.backmonstrao.domain.Transacao;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.List;
 import java.util.Random;
 
 @Service
@@ -48,12 +50,22 @@ public class GeneratorService {
     public String generateDescricao(int seed) {
         String sujeito = SUJEITOS[seed % SUJEITOS.length];
         String verbo = VERBOS[seed % VERBOS.length];
-        String predicado = PREDICADOS[seed % VERBOS.length];
+        String predicado = PREDICADOS[seed % PREDICADOS.length];
         return String.format("%s %s %s", sujeito, verbo, predicado);
     }
 
-    Transacao getTransacao(int id, int year, int month) {
-        int seed = id + year + month;
+    public List<Transacao> getTransacoes(int id, int year, int month, int quant) {
+        List<Transacao> transacaos = new ArrayList<>();
+
+        for (var i = 0; i < quant; i++) {
+            int seed = i + id + year + month;
+            transacaos.add(getTransacao(id, year, month, seed));
+        }
+
+        return transacaos;
+    }
+
+    private Transacao getTransacao(int id, int year, int month, int seed) {
 
         Transacao transacao = new Transacao();
         transacao.setDescricao(generateDescricao(seed));
@@ -62,4 +74,6 @@ public class GeneratorService {
         transacao.setDuplicated(false);
         return transacao;
     }
+
+
 }
