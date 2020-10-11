@@ -10,7 +10,6 @@ import org.springframework.boot.test.web.client.TestRestTemplate;
 import org.springframework.boot.web.server.LocalServerPort;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.junit.jupiter.api.Assertions.assertTrue;
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 public class TransactionsControllerIntegrationTest {
@@ -34,8 +33,14 @@ public class TransactionsControllerIntegrationTest {
         ObjectMapper mapper = new ObjectMapper();
         int id = 1000;
 
-        assertThat(this.restTemplate.getForObject("http://localhost:" + port + "/" + id + "/transacoes/",
-                String.class)).contains(mapper.writeValueAsString(getTransacao()));
+        String baseUrl = "http://localhost:" + port + "/";
+
+        int year = 2020;
+        int month = 9;
+
+        String url = baseUrl + id + "/transacoes/" + year + "/" + month + "/";
+        assertThat(this.restTemplate.getForObject(url, String.class))
+                .contains(mapper.writeValueAsString(getTransacao()));
     }
 
     private Transacao getTransacao() {

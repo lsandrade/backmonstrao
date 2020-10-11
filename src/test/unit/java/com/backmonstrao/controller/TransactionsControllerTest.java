@@ -26,15 +26,17 @@ class TransactionsControllerTest {
     void mustReturnTransactions() {
         TransactionsController controller = new TransactionsController(service);
         int id = 1000;
+        int year = 2020;
+        int month = 9;
 
         ResponseEntity<List<Transacao>> expected = new ResponseEntity<>(
                 List.of(getTransacao()),
                 HttpStatus.OK
         );
 
-        when(service.getTransacoes(eq(id))).thenReturn(List.of(getTransacao()));
+        when(service.getTransacoes(eq(id), eq(year), eq(month))).thenReturn(List.of(getTransacao()));
 
-        ResponseEntity<List<Transacao>> transacoes = controller.getTransacoes(id);
+        ResponseEntity<List<Transacao>> transacoes = controller.getTransacoes(id, year, month);
 
         assertNotNull(transacoes);
         assertEquals(expected, transacoes);

@@ -22,9 +22,11 @@ public class TransactionsController {
         this.service = service;
     }
 
-    @GetMapping("/{id}/transacoes")
-    public ResponseEntity<List<Transacao>> getTransacoes(@PathVariable int id) {
-        return ResponseEntity.ok(service.getTransacoes(id));
+    @GetMapping("/{id}/transacoes/{year}/{month}/")
+    public ResponseEntity<List<Transacao>> getTransacoes(@PathVariable int id,
+                                                         @PathVariable int year,
+                                                         @PathVariable int month) {
+        return ResponseEntity.ok(service.getTransacoes(id, year, month));
     }
 
 }
