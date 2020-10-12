@@ -38,7 +38,7 @@ public class TransactionsControllerIntegrationTest {
         int year = 2020;
         int month = 9;
 
-        String url = baseUrl + id + "/transacoes/" + year + "/" + month + "/";
+        String url = baseUrl + id + "/transacoes/" + year + "/" + month;
         assertThat(this.restTemplate.getForObject(url, String.class))
                 .contains(mapper.writeValueAsString(getTransacao()));
     }
