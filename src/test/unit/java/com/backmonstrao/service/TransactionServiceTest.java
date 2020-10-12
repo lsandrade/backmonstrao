@@ -14,9 +14,7 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import java.util.List;
 import java.util.stream.Stream;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
-import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.anyBoolean;
 import static org.mockito.ArgumentMatchers.anyInt;
 import static org.mockito.Mockito.*;
@@ -53,7 +51,7 @@ public class TransactionServiceTest {
 
     @ParameterizedTest
     @ValueSource(ints = {999, 100000001})
-    void mustThrowExceptionWhenInvalidIdIsPassed(int id) throws Exception {
+    void mustThrowExceptionWhenInvalidIdIsPassed(int id) {
         Exception ex = assertThrows(Exception.class,
                 () -> service.getTransacoes(id, VALID_YEAR, VALID_MONTH));
         assertEquals("ID da transação deve ser um valor entre 1000 e 100000000",
@@ -62,10 +60,11 @@ public class TransactionServiceTest {
 
     @ParameterizedTest
     @ValueSource(ints = {1969, 2021})
-    void mustReturnEmptyListWhenInvalidYearIsPassed(int year) throws Exception {
-        List<Transacao> transacoes = service.getTransacoes(VALID_ID, year, VALID_MONTH);
-
-        assertEquals(0, transacoes.size());
+    void mustThrowExceptionWhenInvalidYearIsPassed(int year) throws Exception {
+        Exception ex = assertThrows(Exception.class,
+                () -> service.getTransacoes(VALID_ID, year, VALID_MONTH));
+        assertEquals("Ei, viajante do tempo. O ano deve ser um inteiro válido entre 1970 e o ano atual",
+                ex.getMessage());
     }
 
     @ParameterizedTest

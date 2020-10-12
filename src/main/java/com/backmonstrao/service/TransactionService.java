@@ -18,6 +18,8 @@ public class TransactionService {
     public static final int NEXT_YEAR = Calendar.getInstance().get(Calendar.YEAR) + 1;
     public static final int MIN_YEAR = 1970;
     public static final int[] VALID_MONTHS = {1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12};
+    public static final String INVALID_ID_ERROR_MESSAGE = "ID da transação deve ser um valor entre %s e %s";
+    public static final String INVALID_YEAR_ERROR_MESSAGE = "Ei, viajante do tempo. O ano deve ser um inteiro válido entre 1970 e o ano atual";
 
     private GeneratorService generator;
 
@@ -29,11 +31,14 @@ public class TransactionService {
     public List<Transacao> getTransacoes(int id, int year, int month) throws Exception {
 
         if (!isIdValid(id)) {
-            throw new Exception(String.format("ID da transação deve ser um valor entre %s e %s",
-                    MIN_VALUE_ID, MAX_VALUE_ID));
+            throw new Exception(String.format(INVALID_ID_ERROR_MESSAGE, MIN_VALUE_ID, MAX_VALUE_ID));
         }
 
-        if (isYearValid(year) && isMonthValid(month)) {
+        if (!isYearValid(year)) {
+            throw new Exception(INVALID_YEAR_ERROR_MESSAGE);
+        }
+
+        if (isMonthValid(month)) {
             int quant = (id + month) % 10 + 1;
             boolean duplicated = month % 4 == 0;
             return generator.getTransacoes(id, year, month, quant, duplicated);
