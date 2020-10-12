@@ -23,7 +23,7 @@ class TransactionsControllerTest {
     TransactionService service;
 
     @Test
-    void mustReturnTransactions() {
+    void mustReturnTransactions() throws Exception {
         TransactionsController controller = new TransactionsController(service);
         int id = 1000;
         int year = 2020;

@@ -12,6 +12,8 @@ import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
 
+import static org.springframework.http.HttpStatus.BAD_REQUEST;
+
 @RestController
 @RequestMapping("/")
 public class TransactionsController {
@@ -28,7 +30,11 @@ public class TransactionsController {
     public ResponseEntity<List<Transacao>> getTransacoes(@PathVariable int id,
                                                          @PathVariable int year,
                                                          @PathVariable int month) {
-        return ResponseEntity.ok(service.getTransacoes(id, year, month));
+        try {
+            return ResponseEntity.ok(service.getTransacoes(id, year, month));
+        } catch (Exception e) {
+            return new ResponseEntity(e.getMessage(), BAD_REQUEST);
+        }
     }
 
 }

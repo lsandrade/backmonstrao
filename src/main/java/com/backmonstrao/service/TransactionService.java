@@ -26,15 +26,21 @@ public class TransactionService {
         this.generator = generator;
     }
 
-    public List<Transacao> getTransacoes(int id, int year, int month) {
+    public List<Transacao> getTransacoes(int id, int year, int month) throws Exception {
 
-        if (isIdValid(id) && isYearValid(year) && isMonthValid(month)) {
+        if (!isIdValid(id)) {
+            throw new Exception(String.format("ID da transação deve ser um valor entre %s e %s",
+                    MIN_VALUE_ID, MAX_VALUE_ID));
+        }
+
+        if (isYearValid(year) && isMonthValid(month)) {
             int quant = (id + month) % 10 + 1;
             boolean duplicated = month % 4 == 0;
             return generator.getTransacoes(id, year, month, quant, duplicated);
         }
 
         return Collections.emptyList();
+
     }
 
     private boolean isMonthValid(int month) {

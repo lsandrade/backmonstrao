@@ -16,6 +16,7 @@ import java.util.stream.Stream;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.ArgumentMatchers.anyBoolean;
 import static org.mockito.ArgumentMatchers.anyInt;
 import static org.mockito.Mockito.*;
@@ -38,7 +39,7 @@ public class TransactionServiceTest {
     }
 
     @Test
-    void mustReturnTransactionsWhenValidIdDataIsPassed() {
+    void mustReturnTransactionsWhenValidIdDataIsPassed() throws Exception {
         List<Transacao> expected = List.of(getTransacao());
 
         when(generator.getTransacoes(anyInt(), anyInt(), anyInt(), anyInt(), anyBoolean())).thenReturn(List.of(getTransacao()));
@@ -52,15 +53,16 @@ public class TransactionServiceTest {
 
     @ParameterizedTest
     @ValueSource(ints = {999, 100000001})
-    void mustReturnEmptyListWhenInvalidIdIsPassed(int id) {
-        List<Transacao> transacoes = service.getTransacoes(id, VALID_YEAR, VALID_MONTH);
-
-        assertEquals(0, transacoes.size());
+    void mustThrowExceptionWhenInvalidIdIsPassed(int id) throws Exception {
+        Exception ex = assertThrows(Exception.class,
+                () -> service.getTransacoes(id, VALID_YEAR, VALID_MONTH));
+        assertEquals("ID da transação deve ser um valor entre 1000 e 100000000",
+                ex.getMessage());
     }
 
     @ParameterizedTest
     @ValueSource(ints = {1969, 2021})
-    void mustReturnEmptyListWhenInvalidYearIsPassed(int year) {
+    void mustReturnEmptyListWhenInvalidYearIsPassed(int year) throws Exception {
         List<Transacao> transacoes = service.getTransacoes(VALID_ID, year, VALID_MONTH);
 
         assertEquals(0, transacoes.size());
@@ -68,7 +70,7 @@ public class TransactionServiceTest {
 
     @ParameterizedTest
     @ValueSource(ints = {0, 13})
-    void mustReturnEmptyListWhenInvalidMonthIsPassed(int month) {
+    void mustReturnEmptyListWhenInvalidMonthIsPassed(int month) throws Exception {
         List<Transacao> transacoes = service.getTransacoes(VALID_ID, VALID_YEAR, month);
 
         assertEquals(0, transacoes.size());
@@ -76,7 +78,7 @@ public class TransactionServiceTest {
 
     @ParameterizedTest
     @MethodSource("provideMonthAndQuant")
-    void mustReturnMultipleTransactionsAccordingToIdAndMonth(int month, int quant) {
+    void mustReturnMultipleTransactionsAccordingToIdAndMonth(int month, int quant) throws Exception {
         List<Transacao> transacoes = service.getTransacoes(VALID_ID, VALID_YEAR, month);
 
         verify(generator, times(1))
@@ -85,7 +87,7 @@ public class TransactionServiceTest {
 
     @ParameterizedTest
     @MethodSource("provideMonthAndDuplicated")
-    void mustReturnAtLeastThreeMonthsWithDuplicatedTransactionsInTwelveMonths(int month, boolean duplicated) {
+    void mustReturnAtLeastThreeMonthsWithDuplicatedTransactionsInTwelveMonths(int month, boolean duplicated) throws Exception {
         List<Transacao> transacoes = service.getTransacoes(VALID_ID, VALID_YEAR, month);
 
         verify(generator, times(1))

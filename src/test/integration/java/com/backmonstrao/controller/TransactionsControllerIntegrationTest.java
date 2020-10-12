@@ -46,7 +46,7 @@ public class TransactionsControllerIntegrationTest {
 
         int port = 8080;
         String baseUrl = "http://localhost:" + port + "/";
-        
+
         int id = 1000;
         int year = 2020;
         int month = 9;
@@ -61,6 +61,24 @@ public class TransactionsControllerIntegrationTest {
                 .andExpect(jsonPath("$[0].valor", Matchers.is(530101)))
                 .andExpect(jsonPath("$[0].duplicated", Matchers.is(false)));
 
+    }
+
+    @Test
+    void mustReturnErrorWhenInvalidIdIsPassed() throws Exception {
+
+        when(service.getTransacoes(anyInt(), anyInt(), anyInt())).thenThrow(Exception.class);
+
+        int port = 8080;
+        String baseUrl = "http://localhost:" + port + "/";
+
+        int id = 10;
+        int year = 2020;
+        int month = 9;
+        String url = baseUrl + id + "/transacoes/" + year + "/" + month;
+
+        this.mockMvc
+                .perform(get(url))
+                .andExpect(status().is4xxClientError());
     }
 
     private Transacao getTransacao() {
