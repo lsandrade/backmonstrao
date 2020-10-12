@@ -20,6 +20,7 @@ public class TransactionService {
     public static final int[] VALID_MONTHS = {1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12};
     public static final String INVALID_ID_ERROR_MESSAGE = "ID da transação deve ser um valor entre %s e %s";
     public static final String INVALID_YEAR_ERROR_MESSAGE = "Ei, viajante do tempo. O ano deve ser um inteiro válido entre 1970 e o ano atual";
+    public static final String INVALID_MONTH_ERROR_MESSAGE = "O mês deve ser um valor inteiro entre 1 e 12";
 
     private GeneratorService generator;
 
@@ -38,13 +39,14 @@ public class TransactionService {
             throw new Exception(INVALID_YEAR_ERROR_MESSAGE);
         }
 
-        if (isMonthValid(month)) {
-            int quant = (id + month) % 10 + 1;
-            boolean duplicated = month % 4 == 0;
-            return generator.getTransacoes(id, year, month, quant, duplicated);
+        if (!isMonthValid(month)) {
+            throw new Exception(INVALID_MONTH_ERROR_MESSAGE);
         }
 
-        return Collections.emptyList();
+        int quant = (id + month) % 10 + 1;
+        boolean duplicated = month % 4 == 0;
+        return generator.getTransacoes(id, year, month, quant, duplicated);
+
 
     }
 

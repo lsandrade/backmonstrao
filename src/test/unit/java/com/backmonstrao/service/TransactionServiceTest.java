@@ -60,7 +60,7 @@ public class TransactionServiceTest {
 
     @ParameterizedTest
     @ValueSource(ints = {1969, 2021})
-    void mustThrowExceptionWhenInvalidYearIsPassed(int year) throws Exception {
+    void mustThrowExceptionWhenInvalidYearIsPassed(int year) {
         Exception ex = assertThrows(Exception.class,
                 () -> service.getTransacoes(VALID_ID, year, VALID_MONTH));
         assertEquals("Ei, viajante do tempo. O ano deve ser um inteiro válido entre 1970 e o ano atual",
@@ -69,10 +69,11 @@ public class TransactionServiceTest {
 
     @ParameterizedTest
     @ValueSource(ints = {0, 13})
-    void mustReturnEmptyListWhenInvalidMonthIsPassed(int month) throws Exception {
-        List<Transacao> transacoes = service.getTransacoes(VALID_ID, VALID_YEAR, month);
-
-        assertEquals(0, transacoes.size());
+    void mustThrowExceptionWhenInvalidMonthIsPassed(int month) {
+        Exception ex = assertThrows(Exception.class,
+                () -> service.getTransacoes(VALID_ID, VALID_YEAR, month));
+        assertEquals("O mês deve ser um valor inteiro entre 1 e 12",
+                ex.getMessage());
     }
 
     @ParameterizedTest
