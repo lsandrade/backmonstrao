@@ -1,2 +1,2 @@
-language = "java10"
-run = "./gradlew clean build"
+language = "java11"
+run = "./gradlew bootRun"
