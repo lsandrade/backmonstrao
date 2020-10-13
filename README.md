@@ -55,3 +55,9 @@ GET http://localhost:8080/9999/transacoes/2020/12/
 ]
 ```
 
+<p>
+    <img src="https://github.com/lsandrade/backmonstrao/blob/master/imgs/Captura%20de%20Tela%202020-10-12%20%C3%A0s%2021.56.24.png">
+ </p>
+ <p>
+    <img src="https://github.com/lsandrade/backmonstrao/blob/master/imgs/Captura%20de%20Tela%202020-10-12%20%C3%A0s%2021.56.39.png">
+ </p>
